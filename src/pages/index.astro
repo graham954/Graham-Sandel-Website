@@ -1,0 +1,308 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { stats, leadership } from '../data/site';
+
+const marquee = ['DECA State Officer', 'Class President', 'Nonprofit Founder', 'Varsity Athlete', 'Community Builder'];
+---
+
+<Layout>
+  <!-- HERO ----------------------------------------------------- -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <p class="kicker reveal">Lexington, South Carolina &middot; Class of 2028</p>
+        <h1 class="hero-title">
+          <span class="line"><span class="line-in" style="--d:.06s">I&rsquo;m Graham</span></span>
+          <span class="line"><span class="line-in" style="--d:.16s">Sandel.</span></span>
+          <span class="line line-sub"><span class="line-in" style="--d:.3s">I lead, build, and lift people up.</span></span>
+        </h1>
+        <p class="lede reveal" style="--reveal-delay:.28s">
+          A high-school junior pouring everything into leadership &mdash; a DECA state officer
+          serving thousands, my class president, and the founder of a nonprofit bringing the
+          arts to kids.
+        </p>
+        <div class="hero-actions reveal" style="--reveal-delay:.36s">
+          <a class="btn btn--primary" href="/leadership">See what I do <span class="arr">&rarr;</span></a>
+          <a class="btn btn--ghost" href="/about">My story</a>
+        </div>
+      </div>
+
+      <aside class="hero-figure reveal" style="--reveal-delay:.2s" data-tilt>
+        <div class="figure-card">
+          <img src="/images/hero.jpg" width="1200" height="1800" fetchpriority="high"
+            alt="Graham Sandel in his South Carolina DECA blazer." />
+          <div class="figure-overlay">
+            <span class="figure-caption">Outgoing &middot; Charismatic &middot; Philanthropist</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- MARQUEE RIBBON ------------------------------------------- -->
+  <div class="ribbon" aria-hidden="true">
+    <div class="ribbon-track">
+      {Array.from({ length: 2 }).map(() =>
+        marquee.map((m) => (
+          <span class="ribbon-item">{m}<span class="ribbon-dot">&#9679;</span></span>
+        ))
+      )}
+    </div>
+  </div>
+
+  <!-- STATS (editorial, not card-grid) ------------------------- -->
+  <section class="section section--ink stats">
+    <div class="container">
+      <h2 class="stats-head reveal">The numbers behind the work.</h2>
+      <dl class="stats-list">
+        {stats.map((s, i) => (
+          <div class="stat reveal" style={`--reveal-delay:${i * 0.08}s`}>
+            <dt data-count={s.value}>{s.value}</dt>
+            <dd>{s.label}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- WHAT I DO (editorial list) ------------------------------- -->
+  <section class="section do">
+    <div class="container">
+      <header class="do-header reveal">
+        <h2>Four arenas. One driving force.</h2>
+        <p class="measure">Wherever I show up &mdash; competition, school, community, or the
+          track &mdash; the goal is the same: bring people together and make something happen.</p>
+      </header>
+      <div class="do-list">
+        {leadership.map((l, i) => (
+          <a class="do-row reveal" href="/leadership" style={`--reveal-delay:${i * 0.07}s; --reveal-x:-30px; --reveal-y:0`}>
+            <span class="do-num">0{i + 1}</span>
+            <span class="do-org">{l.org}</span>
+            <span class="do-role">{l.role}</span>
+            <span class="do-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA (drenched) ------------------------------------------- -->
+  <section class="section section--flare cta">
+    <div class="container cta-inner reveal">
+      <h2>Want the full story?</h2>
+      <p>From a first DECA conference to founding a nonprofit &mdash; here&rsquo;s how I got here.</p>
+      <a class="btn btn--ink" href="/about">Read my story <span class="arr">&rarr;</span></a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Hero ------------------------------------------------------- */
+  .hero { padding-block: clamp(3rem, 7vw, 6rem) clamp(3.5rem, 7vw, 6rem); }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1.35fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .hero-title {
+    font-size: var(--step-5);
+    line-height: 0.92;
+    margin: 1.4rem 0 1.6rem;
+  }
+  /* Masked line reveal — each line wipes up from behind a clip */
+  .hero-title .line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+  }
+  .hero-title .line-in { display: block; }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-title .line-in {
+      transform: translateY(110%);
+      opacity: 0;
+      animation: lineUp 0.95s var(--ease-out) forwards;
+      animation-delay: var(--d, 0s);
+    }
+  }
+  @keyframes lineUp { to { transform: none; opacity: 1; } }
+  .line-sub { margin-top: 0.5rem; }
+  .line-sub .line-in {
+    font-size: clamp(1.4rem, 3.2vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--flare);
+    line-height: 1.02;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2rem; }
+
+  .hero-figure { perspective: 1000px; }
+  .figure-card {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: 0 30px 60px -25px color-mix(in oklch, var(--flare) 60%, transparent);
+    transform: rotate(2deg);
+    transition: transform 0.6s var(--ease-out);
+  }
+  .hero-figure:hover .figure-card { transform: rotate(0deg) translateY(-4px); }
+  .figure-card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 18%;
+  }
+  /* brand-blue wash to tie the photo to the palette + lift the caption */
+  .figure-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--flare) 18%, transparent) 0%,
+      transparent 32%,
+      color-mix(in oklch, var(--ink) 55%, transparent) 100%
+    );
+    pointer-events: none;
+  }
+  .figure-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.4rem;
+    z-index: 1;
+  }
+  .figure-caption {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--on-flare);
+    background: color-mix(in oklch, var(--flare) 88%, transparent);
+    backdrop-filter: blur(4px);
+    padding: 0.5rem 0.95rem;
+    border-radius: 999px;
+    width: fit-content;
+  }
+
+  /* Ribbon ----------------------------------------------------- */
+  .ribbon {
+    background: var(--flare);
+    color: var(--on-flare);
+    padding-block: 0.9rem;
+    overflow: hidden;
+    border-block: 2px solid var(--ink);
+  }
+  .ribbon-track {
+    display: flex;
+    width: max-content;
+    white-space: nowrap;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .ribbon-track { animation: scroll 26s linear infinite; }
+  }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+  .ribbon-item {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+  .ribbon-dot { margin-inline: 1.4rem; font-size: 0.7rem; opacity: 0.6; }
+
+  /* Stats ------------------------------------------------------ */
+  .stats-head { margin-bottom: clamp(2rem, 4vw, 3rem); max-width: 16ch; }
+  .stats-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .stat { padding-top: 1.1rem; position: relative; }
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--flare);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 0.7s var(--ease-out);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+  .stat.is-visible::before { transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) { .stat::before { transform: scaleX(1); } }
+  .stat dt {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+    color: var(--paper);
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+  .stat dd { margin-top: 0.5rem; color: var(--on-ink-muted); font-size: 1rem; }
+
+  /* Do --------------------------------------------------------- */
+  .do-header { margin-bottom: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 1.2rem; }
+  .do-header h2 { max-width: 18ch; }
+  .do-list { border-top: 1px solid var(--line); }
+  .do-row {
+    display: grid;
+    grid-template-columns: auto 1.4fr 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    padding: clamp(1.3rem, 2.5vw, 2rem) 0;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.3s var(--ease-out), padding-inline 0.3s var(--ease-out);
+  }
+  .do-row:hover { background: var(--flare-soft); padding-inline: 1.4rem; }
+  .do-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--flare);
+  }
+  .do-org {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.3rem, 2.8vw, 2rem);
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .do-role { color: var(--text-muted); font-weight: 500; }
+  .do-arrow {
+    font-family: var(--font-display);
+    color: var(--flare);
+    font-size: 1.4rem;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+  }
+  .do-row:hover .do-arrow { opacity: 1; transform: none; }
+
+  /* CTA -------------------------------------------------------- */
+  .cta-inner { display: grid; gap: 1.2rem; justify-items: start; }
+  .cta-inner h2 { max-width: 14ch; }
+  .cta-inner p { color: var(--on-flare); max-width: 42ch; font-size: 1.1rem; opacity: 0.85; }
+  .cta-inner .btn { margin-top: 0.6rem; }
+
+  /* Responsive ------------------------------------------------- */
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-figure { max-width: 360px; }
+    .stats-list { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 620px) {
+    .do-row { grid-template-columns: auto 1fr; row-gap: 0.3rem; }
+    .do-role { grid-column: 2; }
+    .do-num { grid-row: 1 / 3; align-self: start; }
+    .do-arrow { display: none; }
+  }
+</style>

@@ -1,0 +1,128 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { socials, email, location } from '../data/site';
+---
+
+<Layout title="Contact" description="Get in touch with Graham Sandel.">
+  <section class="section page-hero">
+    <div class="container">
+      <p class="kicker reveal">Contact</p>
+      <h1 class="reveal" style="--reveal-delay:.06s">Let&rsquo;s connect.</h1>
+      <p class="lede reveal" style="--reveal-delay:.12s">
+        Leadership, DECA, the nonprofit, or just to say hello &mdash; I&rsquo;d genuinely
+        love to hear from you.
+      </p>
+    </div>
+  </section>
+
+  <section class="contact-body">
+    <div class="container contact-grid">
+      <a class="contact-primary reveal section--flare" href={`mailto:${email}`}>
+        <span class="contact-label">Email me</span>
+        <span class="contact-value">{email}</span>
+        <span class="contact-arrow arr" aria-hidden="true">&rarr;</span>
+      </a>
+
+      <div class="contact-side">
+        <div class="contact-block reveal" style="--reveal-delay:.06s">
+          <span class="contact-label">Find me online</span>
+          <ul class="social-list">
+            {socials.map((s) => (
+              <li>
+                <a href={s.href} target="_blank" rel="noopener">
+                  {s.label}<span class="nearr" aria-hidden="true">&nearr;</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="contact-block reveal" style="--reveal-delay:.12s">
+          <span class="contact-label">Based in</span>
+          <p class="contact-location">{location}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero h1 { margin: 1.4rem 0 1.5rem; }
+  .page-hero { padding-bottom: clamp(1rem, 2vw, 2rem); }
+
+  .contact-body { padding-bottom: clamp(4rem, 8vw, 7rem); }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 1.4rem;
+    align-items: stretch;
+  }
+  .contact-primary {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.7rem;
+    padding: clamp(2rem, 4vw, 3rem);
+    border-radius: var(--radius-xl);
+    min-height: 280px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.5s var(--ease-out);
+  }
+  .contact-primary:hover { transform: translateY(-5px); }
+  .contact-primary .contact-value {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.4rem, 3.4vw, 2.3rem);
+    letter-spacing: -0.03em;
+    color: var(--on-flare);
+    word-break: break-word;
+    line-height: 1.05;
+  }
+  .contact-arrow { position: absolute; top: clamp(2rem,4vw,3rem); right: clamp(2rem,4vw,3rem); font-size: 1.8rem; color: var(--on-flare); transition: transform 0.4s var(--ease-out); }
+  .contact-primary:hover .contact-arrow { transform: translate(5px, -5px); }
+
+  .contact-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .contact-primary .contact-label { color: color-mix(in oklch, var(--on-flare) 75%, transparent); }
+
+  .contact-side { display: flex; flex-direction: column; gap: 1.4rem; }
+  .contact-block {
+    flex: 1;
+    padding: clamp(1.6rem, 3vw, 2rem);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .contact-block .contact-label { color: var(--text-muted); }
+  .social-list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .social-list a {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: color 0.25s var(--ease-out);
+  }
+  .social-list a:hover { color: var(--flare); }
+  .nearr { color: var(--flare); font-size: 0.9em; }
+  .contact-location {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 1.3rem;
+  }
+
+  @media (max-width: 760px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>

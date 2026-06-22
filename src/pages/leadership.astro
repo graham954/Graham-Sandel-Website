@@ -1,0 +1,115 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { leadership } from '../data/site';
+---
+
+<Layout title="Leadership" description="Graham Sandel's leadership and activities — South Carolina DECA, student government, Children in the Arts, and varsity athletics.">
+  <section class="section page-hero">
+    <div class="container">
+      <p class="kicker reveal">Leadership &amp; activities</p>
+      <h1 class="reveal" style="--reveal-delay:.06s">Where I lead,<br />serve, and compete.</h1>
+      <p class="lede reveal" style="--reveal-delay:.12s">
+        A statewide DECA office, my class presidency, a nonprofit I founded, and two varsity
+        sports. Here&rsquo;s where I put in the work &mdash; and what&rsquo;s come of it.
+      </p>
+    </div>
+  </section>
+
+  <section class="leadership-list">
+    <div class="container">
+      {leadership.map((l, i) => (
+        <article class="lead-item reveal" style={`--reveal-delay:${i * 0.05}s`}>
+          <div class="lead-media">
+            <img src={l.image} alt={l.alt} width="1200" height="900" loading="lazy" decoding="async" />
+            <span class="lead-tag">{l.period}</span>
+          </div>
+          <div class="lead-content">
+            <h2>{l.org}</h2>
+            <p class="lead-role">{l.role}</p>
+            <p class="lead-summary measure">{l.summary}</p>
+            <ul class="lead-highlights">
+              {l.highlights.map((h) => <li>{h}</li>)}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero h1 { margin: 1.4rem 0 1.5rem; }
+  .page-hero { padding-bottom: clamp(1rem, 2vw, 2rem); }
+
+  .leadership-list .container { padding-bottom: clamp(4rem, 8vw, 7rem); }
+  .lead-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    border-top: 1px solid var(--line);
+  }
+  .lead-item:first-child { border-top: 0; }
+  /* alternate image side for editorial rhythm */
+  .lead-item:nth-child(even) .lead-media { order: 2; }
+
+  .lead-media {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--paper-2);
+    box-shadow: 0 24px 50px -34px color-mix(in oklch, var(--ink) 80%, transparent);
+  }
+  .lead-media img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s var(--ease-out);
+  }
+  .lead-item:hover .lead-media img { transform: scale(1.04); }
+  .lead-tag {
+    position: absolute;
+    left: 0.9rem; bottom: 0.9rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--paper);
+    background: color-mix(in oklch, var(--ink) 70%, transparent);
+    backdrop-filter: blur(6px);
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+  }
+
+  .lead-content h2 { font-size: var(--step-3); }
+  .lead-role {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-1);
+    color: var(--flare);
+    margin: 0.5rem 0 0.8rem;
+  }
+  .lead-summary { color: var(--text); margin-bottom: 1.3rem; }
+  .lead-highlights { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .lead-highlights li {
+    position: relative;
+    padding-left: 1.7rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .lead-highlights li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0.5em;
+    width: 0.7rem; height: 0.7rem;
+    background: var(--flare);
+    border-radius: 3px;
+    transform: rotate(45deg);
+  }
+
+  @media (max-width: 760px) {
+    .lead-item { grid-template-columns: 1fr; gap: 1.4rem; }
+    .lead-item:nth-child(even) .lead-media { order: 0; }
+    .lead-media { aspect-ratio: 16 / 10; }
+  }
+</style>

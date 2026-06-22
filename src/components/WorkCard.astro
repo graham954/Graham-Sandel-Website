@@ -1,0 +1,74 @@
+---
+interface Props {
+  title: string;
+  category: string;
+  summary: string;
+  metric?: string;
+  href?: string;
+}
+const { title, category, summary, metric, href } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag class="work-card reveal" {...href ? { href } : {}}>
+  <div class="work-top">
+    <span class="work-cat">{category}</span>
+    {metric && <span class="work-metric">{metric}</span>}
+  </div>
+  <h3>{title}</h3>
+  <p>{summary}</p>
+  <span class="work-cta">
+    Read more <span class="arr" aria-hidden="true">&rarr;</span>
+  </span>
+</Tag>
+
+<style>
+  .work-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-lg);
+    transition: transform 0.4s var(--ease-out), border-color 0.3s var(--ease-out),
+      box-shadow 0.4s var(--ease-out);
+  }
+  a.work-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--flare);
+    box-shadow: 0 24px 50px -28px color-mix(in oklch, var(--flare) 70%, transparent);
+  }
+  .work-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .work-cat {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  .work-metric {
+    font-family: var(--font-display);
+    font-weight: 800;
+    color: var(--flare);
+    font-size: 1rem;
+  }
+  .work-card h3 { margin-top: 0.3rem; }
+  .work-card p { color: var(--text-muted); }
+  .work-cta {
+    margin-top: auto;
+    padding-top: 0.6rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .work-cta .arr { color: var(--flare); transition: transform 0.4s var(--ease-out); }
+  a.work-card:hover .work-cta .arr { transform: translateX(5px); }
+</style>

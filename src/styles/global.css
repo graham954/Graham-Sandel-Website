@@ -1,0 +1,209 @@
+/* ============================================================
+   grahamsandel.com — design system
+   Register: brand (personal portfolio).
+   Strategy: Committed — a single electric blue carries large
+   surface area against cool near-black ink and a true off-white.
+   Voice: outgoing, charismatic, philanthropist → confident,
+   warm, alive. Not cream-template, not corporate-resume.
+   Type: Bricolage Grotesque (display character) + Hanken
+   Grotesk (neutral body) — deliberate contrast, off the
+   AI reflex-reject list.
+   ============================================================ */
+
+:root {
+  /* Color — OKLCH ------------------------------------------------ */
+  --paper: oklch(0.985 0.004 250);      /* true off-white, faintly cool */
+  --paper-2: oklch(0.955 0.009 250);    /* recessed surface */
+  --ink: oklch(0.2 0.022 258);          /* cool near-black */
+  --ink-2: oklch(0.27 0.028 258);       /* raised dark surface */
+
+  --flare: oklch(0.55 0.19 252);        /* signature electric blue */
+  --flare-deep: oklch(0.47 0.18 252);   /* hover / pressed */
+  --flare-soft: oklch(0.93 0.045 248);  /* tinted wash on light */
+
+  --text: oklch(0.26 0.02 258);         /* body on light — ~10:1 */
+  --text-muted: oklch(0.47 0.018 258);  /* muted on light — ~4.7:1 */
+  --on-ink: oklch(0.96 0.006 250);      /* body on dark */
+  --on-ink-muted: oklch(0.78 0.01 250); /* muted on dark */
+  --on-flare: oklch(0.98 0.008 250);    /* light text on blue drench */
+
+  --line: color-mix(in oklch, var(--ink) 14%, transparent);
+  --line-strong: color-mix(in oklch, var(--ink) 28%, transparent);
+  --line-on-ink: color-mix(in oklch, var(--paper) 16%, transparent);
+
+  /* Type -------------------------------------------------------- */
+  --font-display: 'Bricolage Grotesque', 'Hanken Grotesk', system-ui, sans-serif;
+  --font-body: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+
+  /* Modular scale (≥1.25) via clamp ----------------------------- */
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --step-2: clamp(1.6rem, 1.4rem + 1vw, 2.1rem);
+  --step-3: clamp(2.1rem, 1.7rem + 2vw, 3.1rem);
+  --step-4: clamp(2.8rem, 2.1rem + 3.4vw, 4.4rem);
+  --step-5: clamp(3.4rem, 2.2rem + 5.6vw, 5.8rem);
+
+  /* Layout ------------------------------------------------------ */
+  --container: 1180px;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --radius: 14px;
+  --radius-lg: 26px;
+  --radius-xl: 38px;
+
+  /* Motion ------------------------------------------------------ */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);          /* expo-ish */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* Z-index scale ---------------------------------------------- */
+  --z-sticky: 100;
+  --z-nav: 200;
+  --z-overlay: 300;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img, svg { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; cursor: pointer; }
+
+::selection { background: var(--flare); color: var(--paper); }
+
+:focus-visible {
+  outline: 3px solid var(--flare);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Headings ------------------------------------------------------ */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  color: var(--ink);
+}
+h1 { font-size: var(--step-5); }
+h2 { font-size: var(--step-4); }
+h3 { font-size: var(--step-2); }
+h4 { font-size: var(--step-1); }
+
+p { text-wrap: pretty; }
+.measure { max-width: 68ch; }
+
+/* Layout helpers ------------------------------------------------ */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.section { padding-block: clamp(4.5rem, 10vw, 9rem); }
+.section--ink { background: var(--ink); color: var(--on-ink); }
+.section--ink h1, .section--ink h2, .section--ink h3 { color: var(--paper); }
+.section--ink p { color: var(--on-ink-muted); }
+.section--flare { background: var(--flare); color: var(--on-flare); }
+.section--flare h1, .section--flare h2, .section--flare h3 { color: var(--on-flare); }
+
+.lede {
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: var(--text);
+  max-width: 56ch;
+}
+.section--ink .lede { color: var(--on-ink); }
+
+/* Kicker — used ONCE on a page as a deliberate label, not as
+   per-section grammar. Reads as a small captioned tag, not a
+   tracked-uppercase eyebrow. */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+.kicker::before {
+  content: '';
+  width: 0.55rem; height: 0.55rem;
+  border-radius: 50%;
+  background: var(--flare);
+}
+
+/* Buttons ------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.95rem 1.6rem;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  transition: transform 0.4s var(--ease-out), background-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.btn .arr { transition: transform 0.4s var(--ease-out); }
+.btn:hover { transform: translateY(-3px); }
+.btn:hover .arr { transform: translateX(4px); }
+.btn:active { transform: translateY(-1px) scale(0.98); transition-duration: 0.08s; }
+.btn--primary { background: var(--flare); color: var(--paper); }
+.btn--primary:hover { background: var(--flare-deep); }
+.btn--ink { background: var(--ink); color: var(--paper); }
+.btn--ink:hover { background: var(--ink-2); }
+.btn--ghost { border-color: var(--line-strong); color: var(--ink); }
+.btn--ghost:hover { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.section--ink .btn--ghost { border-color: var(--line-on-ink); color: var(--paper); }
+.section--ink .btn--ghost:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+
+/* Reveal-on-scroll — enhances an already-visible default.
+   Direction is per-element via --reveal-x / --reveal-y so different
+   sections can enter differently (up, from the left, etc.). */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translate3d(var(--reveal-x, 0), var(--reveal-y, 22px), 0);
+    transition: opacity 0.7s var(--ease-out), transform 0.85s var(--ease-out);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+  .reveal.is-visible { opacity: 1; transform: none; }
+}
+
+/* Scroll progress — position indicator, not decoration ---------- */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--flare);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  z-index: var(--z-overlay);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

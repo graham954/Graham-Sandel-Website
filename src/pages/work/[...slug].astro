@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('work', ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const { data } = entry;
+---
+
+<Layout title={data.title} description={data.summary}>
+  <section class="section page-hero">
+    <div class="container">
+      <a class="back" href="/work">&larr; All work</a>
+      <p class="kicker reveal">{data.category}</p>
+      <h1 class="reveal">{data.title}</h1>
+      <p class="lede reveal">{data.summary}</p>
+      {data.metric && <p class="metric reveal">{data.metric}</p>}
+    </div>
+  </section>
+
+  <section class="section entry-body">
+    <div class="container narrow">
+      <article class="prose reveal">
+        <Content />
+      </article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero h1 { margin: 1.1rem 0 1.2rem; max-width: 18ch; }
+  .back {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    display: inline-block;
+    margin-bottom: 1.5rem;
+  }
+  .back:hover { color: var(--flare); }
+  .metric {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--flare);
+    font-size: 1.25rem;
+    margin-top: 0.6rem;
+  }
+  .narrow { max-width: 720px; }
+  .entry-body { padding-top: 1rem; }
+  .prose :global(p) { margin-bottom: 1.1rem; color: var(--text); }
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--flare);
+    padding-left: 1.1rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 1.3rem 0;
+  }
+  .prose :global(h2) { margin: 1.8rem 0 0.8rem; }
+</style>

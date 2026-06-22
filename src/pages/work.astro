@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import WorkCard from '../components/WorkCard.astro';
+
+const entries = (await getCollection('work', ({ data }) => !data.draft)).sort((a, b) => {
+  if (a.data.order !== b.data.order) return a.data.order - b.data.order;
+  return (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0);
+});
+---
+
+<Layout title="Work" description="Projects, events, and fundraisers led by Graham Sandel.">
+  <section class="section page-hero">
+    <div class="container">
+      <p class="kicker reveal">Work &amp; portfolio</p>
+      <h1 class="reveal" style="--reveal-delay:.06s">Things I&rsquo;ve built,<br />organized, and led.</h1>
+      <p class="lede reveal" style="--reveal-delay:.12s">
+        A growing collection of projects, events, and fundraisers. More on the way &mdash;
+        check back soon.
+      </p>
+    </div>
+  </section>
+
+  <section class="section work-section">
+    <div class="container">
+      {
+        entries.length > 0 ? (
+          <div class="work-grid">
+            {entries.map((e) => (
+              <WorkCard
+                title={e.data.title}
+                category={e.data.category}
+                summary={e.data.summary}
+                metric={e.data.metric}
+                href={`/work/${e.slug}`}
+              />
+            ))}
+          </div>
+        ) : (
+          <p class="empty">Portfolio entries are coming soon.</p>
+        )
+      }
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero h1 { margin: 1.4rem 0 1.5rem; }
+  .page-hero { padding-bottom: clamp(1rem, 2vw, 2rem); }
+  .work-section { padding-top: 1rem; }
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
+  .empty { font-size: 1.1rem; }
+</style>

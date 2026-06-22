@@ -1,0 +1,133 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { brandWords } from '../data/site';
+
+const facts = [
+  ['School', 'Lexington High School'],
+  ['Class of', '2028'],
+  ['Hometown', 'Lexington, SC'],
+  ['Studying toward', 'Business · Real estate'],
+];
+---
+
+<Layout title="About" description="Graham Sandel — a junior at Lexington High School pursuing leadership, community impact, and a future in business and real estate.">
+  <section class="section page-hero">
+    <div class="container">
+      <p class="kicker reveal">About me</p>
+      <h1 class="reveal" style="--reveal-delay:.06s">A leader driven by people, purpose, and big goals.</h1>
+    </div>
+  </section>
+
+  <section class="section about-body">
+    <div class="container about-grid">
+      <div class="about-main">
+        <p class="lede reveal">
+          I&rsquo;m Graham Sandel, a junior at Lexington High School in South Carolina.
+          I love leading teams, building community, and turning ideas into things that
+          actually happen.
+        </p>
+        <p class="reveal" style="--reveal-delay:.06s">
+          As a South Carolina DECA state officer, my class&rsquo;s president, and the founder of a
+          nonprofit, I spend my time bringing people together &mdash; whether that&rsquo;s preparing
+          DECA members to compete, rallying school spirit for thousands of classmates, or raising
+          money to put the arts in front of kids who might not otherwise get the chance.
+        </p>
+        <p class="reveal" style="--reveal-delay:.1s">
+          Looking ahead, I&rsquo;m aiming for a business program at a four-year college, with a
+          long-term goal of building a career in real estate. I&rsquo;m motivated by ambitious
+          goals, and I believe the best way to grow is to keep saying yes &mdash; to leadership,
+          and to the communities I&rsquo;m part of.
+        </p>
+
+        <ul class="words reveal" style="--reveal-delay:.14s">
+          {brandWords.map((w) => <li>{w}</li>)}
+        </ul>
+      </div>
+
+      <aside class="about-side reveal" style="--reveal-delay:.1s">
+        <div class="about-portrait">
+          <img src="/images/hero.jpg" width="1200" height="1800" loading="lazy" decoding="async"
+            alt="Graham Sandel in his South Carolina DECA blazer." />
+        </div>
+        <div class="fact-card">
+          <h2 class="fact-title">Quick facts</h2>
+          <dl>
+            {facts.map(([k, v]) => (
+              <div><dt>{k}</dt><dd>{v}</dd></div>
+            ))}
+          </dl>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero { padding-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+  .page-hero h1 { margin-top: 1.4rem; max-width: 15ch; }
+
+  .about-body { padding-top: clamp(1rem, 3vw, 2rem); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .about-main > p + p { margin-top: 1.2rem; }
+  .about-main .lede { color: var(--ink); margin-bottom: 1.2rem; }
+
+  .words {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 2.4rem;
+  }
+  .words li {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.5rem 1.1rem;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 999px;
+    color: var(--ink);
+  }
+
+  .about-side { display: flex; flex-direction: column; gap: 1.2rem; }
+  .about-portrait {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    box-shadow: 0 24px 50px -34px color-mix(in oklch, var(--ink) 80%, transparent);
+  }
+  .about-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 16%; }
+  .fact-card {
+    padding: clamp(1.6rem, 3vw, 2.2rem);
+    border-radius: var(--radius-lg);
+    background: var(--ink);
+    color: var(--on-ink);
+  }
+  .fact-title { color: var(--paper); font-size: var(--step-1); margin-bottom: 1.4rem; }
+  .fact-card dl { display: grid; gap: 1rem; }
+  .fact-card dl > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line-on-ink);
+  }
+  .fact-card dl > div:last-child { border-bottom: 0; padding-bottom: 0; }
+  .fact-card dt { color: var(--on-ink-muted); font-size: 0.95rem; }
+  .fact-card dd {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--paper);
+    text-align: right;
+  }
+
+  @media (max-width: 860px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .fact-card { position: static; }
+  }
+</style>
