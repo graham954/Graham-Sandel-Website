@@ -31,6 +31,13 @@
   --line-strong: color-mix(in oklch, var(--ink) 28%, transparent);
   --line-on-ink: color-mix(in oklch, var(--paper) 16%, transparent);
 
+  /* Surface used by the dark "bands" (.section--ink, footer). In light
+     mode it IS the ink; dark mode re-pins it to a raised dark panel so
+     those sections stay distinct from the page background. */
+  --band: var(--ink);
+
+  color-scheme: light;
+
   /* Type -------------------------------------------------------- */
   --font-display: 'Bricolage Grotesque', 'Hanken Grotesk', system-ui, sans-serif;
   --font-body: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
@@ -113,7 +120,7 @@ p { text-wrap: pretty; }
   padding-inline: var(--gutter);
 }
 .section { padding-block: clamp(4.5rem, 10vw, 9rem); }
-.section--ink { background: var(--ink); color: var(--on-ink); }
+.section--ink { background: var(--band); color: var(--on-ink); }
 .section--ink h1, .section--ink h2, .section--ink h3 { color: var(--paper); }
 .section--ink p { color: var(--on-ink-muted); }
 .section--flare { background: var(--flare); color: var(--on-flare); }
@@ -205,5 +212,80 @@ p { text-wrap: pretty; }
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+}
+
+/* ============================================================
+   DARK MODE
+   Token values flip so the page inverts; the blue brand accent
+   (--flare) is intentionally unchanged so identity is preserved.
+   A small set of overrides re-pins the components that hard-code
+   --ink as a surface or --paper as on-dark text, so the dark
+   "bands" stay dark with light text in both themes.
+   ============================================================ */
+:root[data-theme='dark'] {
+  --paper: oklch(0.165 0.015 258);      /* page bg → deep cool near-black */
+  --paper-2: oklch(0.215 0.02 258);     /* raised surface (cards, panels) */
+  --band: oklch(0.225 0.022 258);       /* dark section bg → raised panel */
+  --ink: oklch(0.95 0.006 250);         /* primary text/headings → light */
+  --ink-2: oklch(0.85 0.011 250);
+
+  --flare-soft: oklch(0.27 0.05 256);   /* tinted wash → dark blue tint */
+
+  --text: oklch(0.92 0.008 250);        /* body — high contrast on paper */
+  --text-muted: oklch(0.78 0.012 250);  /* muted — lighter on dark, clears AA */
+  --on-ink: oklch(0.96 0.006 250);
+  --on-ink-muted: oklch(0.79 0.012 250);
+
+  --line: color-mix(in oklch, var(--ink) 14%, transparent);
+  --line-strong: color-mix(in oklch, var(--ink) 26%, transparent);
+  --line-on-ink: color-mix(in oklch, var(--ink) 14%, transparent);
+
+  color-scheme: dark;
+}
+
+/* Re-pin dark-band components (they hard-code --ink as a surface or --paper
+   as on-dark text). These use !important because the component-scoped rules
+   carry a per-instance attribute selector and load after this file, so a
+   plain override would tie on specificity and lose the cascade. */
+:root[data-theme='dark'] .section--ink :is(h1, h2, h3) { color: var(--ink) !important; }
+:root[data-theme='dark'] .btn--primary { color: var(--on-flare) !important; }
+:root[data-theme='dark'] .section--ink .btn--ghost {
+  color: var(--ink) !important;
+  border-color: var(--line-on-ink) !important;
+}
+:root[data-theme='dark'] ::selection { color: var(--on-flare); }
+
+:root[data-theme='dark'] .fact-card { background: var(--paper-2) !important; }
+:root[data-theme='dark'] .fact-card .fact-title,
+:root[data-theme='dark'] .fact-card dd { color: var(--ink) !important; }
+:root[data-theme='dark'] .footer-mail { color: var(--ink) !important; }
+:root[data-theme='dark'] .case-title { color: var(--ink) !important; }
+:root[data-theme='dark'] .case .back:hover { color: var(--ink) !important; }
+:root[data-theme='dark'] .stat dt { color: var(--ink) !important; }
+:root[data-theme='dark'] .brand-mark { background: var(--paper-2) !important; color: var(--flare) !important; }
+:root[data-theme='dark'] .work-card { background: var(--paper-2) !important; }
+:root[data-theme='dark'] .lead-tag {
+  background: color-mix(in oklch, black 50%, transparent) !important;
+  color: var(--on-ink) !important;
+}
+/* keep the hero photo's bottom veil dark (it uses --ink, now light) */
+:root[data-theme='dark'] .figure-card::after {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--flare) 20%, transparent) 0%,
+    transparent 34%,
+    color-mix(in oklch, black 55%, transparent) 100%
+  );
+}
+
+/* Smooth crossfade only during a manual theme switch (no idle cost) */
+@media (prefers-reduced-motion: no-preference) {
+  .theme-transition,
+  .theme-transition *,
+  .theme-transition *::before,
+  .theme-transition *::after {
+    transition: background-color 0.4s var(--ease-out), color 0.4s var(--ease-out),
+      border-color 0.4s var(--ease-out) !important;
   }
 }

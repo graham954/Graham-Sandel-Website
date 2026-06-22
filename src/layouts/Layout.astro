@@ -25,6 +25,19 @@ const fullTitle = title === 'Graham Sandel' ? title : `${title} · Graham Sandel
     <title>{fullTitle}</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
+    <!-- Set theme before paint to avoid a flash of the wrong mode. -->
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t !== 'dark' && t !== 'light') {
+            t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          }
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
+    </script>
+
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -136,6 +149,22 @@ const fullTitle = title === 'Graham Sandel' ? title : `${title} · Graham Sandel
           card.style.transform = '';
         });
       }
+
+      // --- Dark mode toggle ---------------------------------------
+      const themeToggle = document.getElementById('themeToggle');
+      const root = document.documentElement;
+      const syncTheme = (t) => themeToggle?.setAttribute('aria-pressed', String(t === 'dark'));
+      syncTheme(root.getAttribute('data-theme'));
+      themeToggle?.addEventListener('click', () => {
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        if (!reduce) {
+          root.classList.add('theme-transition');
+          setTimeout(() => root.classList.remove('theme-transition'), 450);
+        }
+        root.setAttribute('data-theme', next);
+        syncTheme(next);
+        try { localStorage.setItem('theme', next); } catch (e) {}
+      });
 
       // --- Mobile nav toggle --------------------------------------
       const toggle = document.getElementById('navToggle');
